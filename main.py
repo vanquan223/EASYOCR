@@ -19,7 +19,11 @@ class Capture(QWidget):
         self.main = main_window
         self.image_path = self.main.image_path # .text()
         self.tesseract_path = self.main.tesseract_path # .text()
-        self.lang = self.main.lang_text.text() or 'vie'
+        
+        self.lang = 'eng'
+        if self.main.lang_text.text() in ('vie', 'vi'):
+            self.lang = 'vie'
+            
         
         self.ensure_directory_exists(self.image_path)
         pytesseract.pytesseract.tesseract_cmd = self.tesseract_path
@@ -96,10 +100,7 @@ class ScreenRegionSelector(QMainWindow):
         self.m_width = 500
         self.m_height = 300
         
-        print("-----------------OCR-----------------")
-        print("Đây là phần mềm ocr của Quân!")
-
-        self.setWindowTitle("OCR By vanquan223")
+        self.setWindowTitle("OCR by vanquan223")
         self.setMinimumSize(self.m_width, self.m_height)
 
         frame = QFrame()
@@ -114,9 +115,9 @@ class ScreenRegionSelector(QMainWindow):
         pixmap.loadFromData(QByteArray.fromBase64(image_base64))
         self.setWindowIcon(QIcon(pixmap))
 
-        self.ocr_title = QLabel("OCR:")
+        self.ocr_title = QLabel("Text:")
         self.ocr_text = QTextEdit()  # QTextEdit to allow text input
-        self.ocr_text.setPlaceholderText("text ocr")
+        self.ocr_text.setPlaceholderText("The ocr text content displayed here has been saved to the clipboard.")
         self.ocr_text.setStyleSheet("background-color: white;")
         
         self.image_path = r'Screenshots\screenshot.png'
@@ -124,10 +125,9 @@ class ScreenRegionSelector(QMainWindow):
         
         self.lang_title = QLabel("Language:")
         self.lang_text = QLineEdit()
-        self.lang_text.setPlaceholderText(r"eng or vie")
-        self.lang_text.setText('eng')
+        self.lang_text.setPlaceholderText(r"Default is eng, enter vi or vie to ocr Vietnamese.")
         
-        self.btn_capture = QPushButton("Capture")
+        self.btn_capture = QPushButton("Capture (Ctrl+Shift+C)")
         self.btn_capture.clicked.connect(self.capture)
         self.btn_capture.setShortcut('Ctrl+Shift+C')
 
@@ -145,12 +145,12 @@ class ScreenRegionSelector(QMainWindow):
         self.capturer.show()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Screen Capturer")
+    parser = argparse.ArgumentParser(description="OCR by vanquan223")
     
     app = QApplication(sys.argv)    
     app.setStyleSheet("""
     QFrame {
-        background-color: #f5f6f7;
+        background-color: rgb(245, 246, 247);
     }
                       
     QPushButton {
@@ -169,8 +169,5 @@ if __name__ == "__main__":
     """)
     selector = ScreenRegionSelector()
     selector.show()
-    
-    # app.setWindowIcon(QIcon(IMG_ICON))
-
     app.exit(app.exec_())
     
