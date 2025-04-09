@@ -6,5 +6,5 @@ pyinstaller main.spec
 ```
 #### or
 ```bash
-pyinstaller --add-data "D:\Program Files\Tesseract-OCR;Tesseract-OCR" --onefile --icon=icons.png --name=EASYOCR --noconsole main.py
+pyinstaller --add-data "C:\Program Files\Tesseract-OCR;Tesseract-OCR" --onefile --icon=icons.png --name=EASYOCR --noconsole main.py
 ```
